@@ -19,7 +19,7 @@ ImageDescriptor::ImageDescriptor(IReader *reader) {
   assert(reader->readByte() == (unsigned)Block::ImageSeparator);
 
   m_left = reader->readWord();
-  m_right = reader->readWord();
+  m_top = reader->readWord();
   m_width = reader->readWord();
   m_height = reader->readWord();
 

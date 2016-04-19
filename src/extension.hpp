@@ -26,7 +26,7 @@ namespace gif {
     ExtensionDetector(IReader *reader);
 
     bool hasExtension();
-    ExtensionLabel getExtensionType();
+    ExtensionLabel getExtensionLabel();
     void skipExtension();
 
   };

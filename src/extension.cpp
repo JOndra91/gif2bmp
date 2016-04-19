@@ -16,7 +16,7 @@ bool ExtensionDetector::hasExtension() {
   return m_reader->peekByte() == (unsigned)Block::ExtensionIntroducer;
 }
 
-ExtensionLabel ExtensionDetector::getExtensionType() {
+ExtensionLabel ExtensionDetector::getExtensionLabel() {
   m_reader->allocate(2);
   unsigned label = m_reader->peekByte(1);
 

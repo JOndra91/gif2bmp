@@ -13,6 +13,9 @@
 #include "header.hpp"
 #include "logicalScreenDescriptor.hpp"
 #include "colorTable.hpp"
+#include "extension.hpp"
+#include "imageDescriptor.hpp"
+#include "blocks.hpp"
 
 using namespace std;
 using namespace gif;
@@ -31,13 +34,12 @@ int main(int argc, char **argv) {
   }
 
   for(int i = 1; i < argc; ++i) {
-    GlobalColorTable *globalColorTable = NULL;
-
     ifstream gif(argv[i]);
 
     FileReader f(&gif);
+    IReader *r = (IReader*)&f;
 
-    Header h((IReader*)&f);
+    Header h(r);
 
     if(h.isValid()) {
       printf("File '%s' is GIF image.\n", argv[i]);
@@ -54,7 +56,7 @@ int main(int argc, char **argv) {
       printf("  Version: 89a\n");
     }
 
-    LogicalScreenDescriptor lsd((IReader*)&f);
+    LogicalScreenDescriptor lsd(r);
 
     printf("  Size: %u × %u\n", lsd.getWidth(), lsd.getHeight() );
     printf("  Global color table: %s\n", boolStr[lsd.hasColorTable()]);
@@ -63,24 +65,98 @@ int main(int argc, char **argv) {
     printf("  Color resolution: %u\n", lsd.getColorResolution());
 
     if(lsd.hasColorTable()) {
-      globalColorTable = new GlobalColorTable((IReader*)&f, &lsd);
+      GlobalColorTable globalColorTable(r, &lsd);
 
-      Color bg = globalColorTable->getBackground();
+      Color bg = globalColorTable.getBackground();
       printf("  Background color: rgb(%u, %u, %u)\n",
         bg.r, bg.g, bg.b);
 
       printf("  Global color table:\n");
 
-      unsigned size = globalColorTable->getSize();
+      unsigned size = globalColorTable.getSize();
 
       for(unsigned i = 0; i < size; ++i) {
-        Color c = globalColorTable->getColor(i);
-        printf("    Color[%u]: rgb(%u, %u, %u)\n",
-          lsd.getBackgroundColorIndex(), c.r, c.g, c.b);
+        Color c = globalColorTable.getColor(i);
+        printf("    Color[%u]: rgb(%u, %u, %u)\n", i, c.r, c.g, c.b);
       }
     }
 
-    delete globalColorTable;
+    ExtensionDetector extensionDetector(r);
+
+    do {
+      ExtensionLabel label = ExtensionLabel::None;
+      if(extensionDetector.hasExtension()) {
+        label = extensionDetector.getExtensionLabel();
+        string extension;
+
+        switch (label) {
+          case ExtensionLabel::PlainText:
+            extension = "PlainText";
+            break;
+
+          case ExtensionLabel::GraphicControl:
+            extension = "GraphicControl";
+            break;
+
+          case ExtensionLabel::Comment:
+            extension = "Comment";
+            break;
+
+          case ExtensionLabel::Application:
+            extension = "Application";
+            break;
+
+          default:
+            extension = "None";
+        }
+
+        printf("  Extension: %s\n", extension.c_str());
+
+        extensionDetector.skipExtension();
+        printf("    skipped\n");
+      }
+      else {
+        ImageDescriptor imageDescriptor(r);
+
+        printf("  Image descriptor:\n");
+        printf("    Position: %u × %u\n", imageDescriptor.getTop(), imageDescriptor.getLeft());
+        printf("    Size: %u × %u\n", imageDescriptor.getWidth(), imageDescriptor.getHeight());
+        printf("    Interlaced: %s\n", boolStr[imageDescriptor.isInterlaced()]);
+        printf("    Local color table: %s\n", boolStr[imageDescriptor.hasColorTable()]);
+        printf("    Global color table size: %u\n", imageDescriptor.getColorTableSize());
+        printf("    Global color table ordered: %s\n", boolStr[imageDescriptor.isColorTableOrdered()]);
+
+        if(imageDescriptor.hasColorTable()) {
+          ColorTable localColorTable(r, imageDescriptor.getColorTableSize());
+
+          printf("    Local color table:\n");
+
+          unsigned size = localColorTable.getSize();
+
+          for(unsigned i = 0; i < size; ++i) {
+            Color c = localColorTable.getColor(i);
+            printf("      Color[%u]: rgb(%u, %u, %u)\n", i, c.r, c.g, c.b);
+          }
+        }
+
+        { // Skip image data
+          r->consume(1);
+          r->allocate(512);
+
+          unsigned blockSize;
+          while((blockSize = r->readByte())) {
+            r->consume(blockSize);
+            if(r->allocated() == 0) {
+              r->allocate(512);
+            }
+          }
+        }
+      }
+
+      r->allocate(1);
+    } while(r->peekByte() != (unsigned)Block::Trailer);
+
+    printf("  Trailer\n");
 
     gif.close();
 

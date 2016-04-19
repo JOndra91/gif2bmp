@@ -25,7 +25,7 @@ namespace gif {
   class ImageDescriptor {
 
     unsigned m_left;
-    unsigned m_right;
+    unsigned m_top;
     unsigned m_width;
     unsigned m_height;
 
@@ -42,8 +42,8 @@ namespace gif {
       return m_left;
     };
 
-    inline unsigned getRight() {
-      return m_right;
+    inline unsigned getTop() {
+      return m_top;
     };
 
     inline unsigned getWidth() {

@@ -11,12 +11,12 @@
 using namespace gif;
 using namespace std;
 
-Header::Header(IReader &reader) {
+Header::Header(IReader *reader) {
   char buffer[3];
   string version;
 
-  reader.allocate(6);
-  reader.copy(3, buffer);
+  reader->allocate(6);
+  reader->copy(3, buffer);
 
   m_isValid = string(buffer, 3) == "GIF";
 
@@ -24,7 +24,7 @@ Header::Header(IReader &reader) {
     return;
   }
 
-  reader.copy(3, buffer);
+  reader->copy(3, buffer);
 
   version = string(buffer, 3);
 

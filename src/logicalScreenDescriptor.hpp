@@ -35,13 +35,13 @@ namespace gif {
 
   public:
 
-    LogicalScreenDescriptor(IReader &reader);
+    LogicalScreenDescriptor(IReader *reader);
 
     inline unsigned getWidth() {
       return m_width;
     }
 
-    inline unsigned getHeigth() {
+    inline unsigned getHeight() {
       return m_height;
     }
 

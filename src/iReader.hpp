@@ -8,7 +8,7 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <arpa/inet.h>
+#include <endian.h>
 
 class IReader {
 
@@ -17,6 +17,20 @@ protected:
   uint8_t *m_buffer;
   uint8_t *m_bufferHead;
   size_t m_bufferSize;
+  size_t m_allocated;
+
+  /**
+   * Returns amount of unallocated bytes in buffer from point of
+   * buffer head to end of buffer.
+   */
+  inline size_t available() {
+    return m_bufferSize - (m_bufferHead - m_buffer) - m_allocated;
+  };
+
+  inline void consumeBuffer(size_t size) {
+    m_bufferHead += size;
+    m_allocated -= size;
+  }
 
 public:
 
@@ -26,14 +40,14 @@ public:
 
   /**
    * Ensures that enough bytes is allocated from point of reading head.
-   * Returns amount of available bytes.
+   * Returns amount of allocated bytes.
    */
   virtual size_t allocate(size_t) = 0;
 
   /**
    * Consumes data from point of reading head.
    * May consume more data than is allocated.
-   * Returns amount of bytes availabe.
+   * Returns amount of allocated bytes.
    */
   virtual size_t consume(size_t) = 0;
 
@@ -53,7 +67,7 @@ public:
       destBuffer[i] = (T)m_bufferHead[i];
     }
 
-    m_bufferHead += size;
+    consumeBuffer(size);
 
     return allocated();
   };
@@ -75,7 +89,7 @@ public:
    */
   inline uint16_t peekWord() {
     uint16_t word = *((uint16_t*)m_bufferHead);
-    return ntohs(word);
+    return le16toh(word);
   };
 
   /**
@@ -85,7 +99,7 @@ public:
    */
   inline uint8_t readByte() {
     uint8_t byte = *m_bufferHead;
-    m_bufferHead++;
+    consumeBuffer(1);
     return byte;
   };
 
@@ -97,8 +111,8 @@ public:
    */
   inline uint16_t readWord() {
     uint16_t word = *((uint16_t*)m_bufferHead);
-    m_bufferHead += 2;
-    return ntohs(word);
+    consumeBuffer(2);
+    return le16toh(word);
   };
 
   /**
@@ -112,7 +126,7 @@ public:
    * Return amount of currently allocated bytes.
    */
   inline size_t allocated() {
-    return m_bufferSize - (m_bufferHead - m_buffer);
+    return m_allocated;
   }
 
 };

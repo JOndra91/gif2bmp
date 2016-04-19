@@ -8,18 +8,18 @@
 
 using namespace gif;
 
-LogicalScreenDescriptor::LogicalScreenDescriptor(IReader &reader) {
+LogicalScreenDescriptor::LogicalScreenDescriptor(IReader *reader) {
   LogicalScreenDescriptorPackedField packedField;
 
-  reader.allocate(6);
+  reader->allocate(7);
 
-  m_width = reader.readWord();
-  m_height = reader.readWord();
+  m_width = reader->readWord();
+  m_height = reader->readWord();
 
-  packedField.packedValue = reader.readByte();
+  packedField.packedValue = reader->readByte();
 
-  m_backgroundIndex = reader.readByte();
-  m_pixelAspectRatio = reader.readByte();
+  m_backgroundIndex = reader->readByte();
+  m_pixelAspectRatio = reader->readByte();
 
   if(m_pixelAspectRatio) {
     m_pixelAspectRatio = (m_pixelAspectRatio + 15) / 64;

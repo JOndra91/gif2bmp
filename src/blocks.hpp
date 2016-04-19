@@ -13,7 +13,13 @@ namespace gif {
     ExtensionIntroducer = 0x21,
     ImageSeparator = 0x2C,
     Trailer = 0x3B,
-    GraphicControlLabel = 0xF9
+  };
+
+  enum class ExtensionLabel {
+    PlainText = 0x01,
+    GraphicControl = 0xF9,
+    Comment = 0xFE,
+    Application = 0xFF,
   };
 
 }

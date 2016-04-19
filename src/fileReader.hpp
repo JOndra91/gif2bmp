@@ -11,12 +11,11 @@
 
 class FileReader : IReader {
 
-  std::ifstream m_file;
+  std::ifstream *m_file;
 
 public:
 
-  FileReader(std::ifstream file);
-  ~FileReader() override;
+  FileReader(std::ifstream *file);
 
   virtual size_t allocate(size_t) override;
   virtual size_t consume(size_t) override;

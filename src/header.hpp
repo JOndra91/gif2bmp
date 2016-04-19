@@ -17,12 +17,11 @@ namespace gif {
 
   class Header {
 
-    // IReader &m_reader;
     Version m_version;
     bool m_isValid;
 
   public:
-    Header(IReader &reader);
+    Header(IReader *reader);
 
     inline bool isValid() {
       return m_isValid;

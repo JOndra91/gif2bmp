@@ -20,6 +20,8 @@ ColorTable::ColorTable(IReader *reader, size_t size) {
   for(Color *c = m_table; c != end; c++, cp++) {
     *c = Color(*cp);
   }
+
+  reader->consume(sizeof(ColorPacked) * m_tableSize);
 }
 
 ColorTable::~ColorTable() {

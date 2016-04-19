@@ -46,7 +46,7 @@ size_t FileReader::allocate(size_t size) {
     }
 
     // WARN: char/uint8_t type conflict on istream::read()
-    m_file->read(reinterpret_cast<char *>(m_bufferHead), required);
+    m_file->read(reinterpret_cast<char *>(m_bufferHead + m_allocated), required);
 
     m_allocated += m_file->gcount();
   }
@@ -57,9 +57,10 @@ size_t FileReader::allocate(size_t size) {
 size_t FileReader::consume(size_t size) {
 
   if(size > m_allocated) {
-    m_allocated = 0;
     m_bufferHead = m_buffer;
     size = size - m_allocated;
+    m_allocated = 0;
+
     m_file->ignore(size);
   }
   else {

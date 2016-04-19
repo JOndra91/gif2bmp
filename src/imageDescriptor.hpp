@@ -62,7 +62,7 @@ namespace gif {
       return m_interlaceFlag;
     };
 
-    inline bool isisColorTableOrdered() {
+    inline bool isColorTableOrdered() {
       return m_sortFlag;
     };
 

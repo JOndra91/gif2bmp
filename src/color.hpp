@@ -23,13 +23,13 @@ namespace gif {
       r = g = b = 0;
     };
 
-    Color(Color &c) {
+    Color(const Color &c) {
       r = c.r;
       g = c.g;
       b = c.b;
     };
 
-    Color(ColorPacked c) {
+    Color(const ColorPacked &c) {
       r = c.r;
       g = c.g;
       b = c.b;

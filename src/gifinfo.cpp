@@ -12,6 +12,7 @@
 #include "fileReader.hpp"
 #include "header.hpp"
 #include "logicalScreenDescriptor.hpp"
+#include "colorTable.hpp"
 
 using namespace std;
 using namespace gif;
@@ -29,10 +30,10 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  ifstream gif;
-
   for(int i = 1; i < argc; ++i) {
-    gif.open(argv[i]);
+    GlobalColorTable *globalColorTable = NULL;
+
+    ifstream gif(argv[i]);
 
     FileReader f(&gif);
 
@@ -60,6 +61,28 @@ int main(int argc, char **argv) {
     printf("  Global color table size: %u\n", lsd.getColorTableSize());
     printf("  Global color table ordered: %s\n", boolStr[lsd.isColorTableOrdered()]);
     printf("  Color resolution: %u\n", lsd.getColorResolution());
+
+    if(lsd.hasColorTable()) {
+      globalColorTable = new GlobalColorTable((IReader*)&f, &lsd);
+
+      Color bg = globalColorTable->getBackground();
+      printf("  Background color: rgb(%u, %u, %u)\n",
+        bg.r, bg.g, bg.b);
+
+      printf("  Global color table:\n");
+
+      unsigned size = globalColorTable->getSize();
+
+      for(unsigned i = 0; i < size; ++i) {
+        Color c = globalColorTable->getColor(i);
+        printf("    Color[%u]: rgb(%u, %u, %u)\n",
+          lsd.getBackgroundColorIndex(), c.r, c.g, c.b);
+      }
+    }
+
+    delete globalColorTable;
+
+    gif.close();
 
   }
 

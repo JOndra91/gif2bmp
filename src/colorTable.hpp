@@ -14,23 +14,34 @@ namespace gif {
 
   class ColorTable {
 
+protected:
     Color *m_table;
     unsigned m_tableSize;
-    unsigned m_backgroundIndex;
 
   public:
 
-    ColorTable(IReader &reader, LogicalScreenDescriptor &descriptor);
+    ColorTable(IReader *reader, size_t size);
     ~ColorTable();
 
     inline Color getColor(unsigned index) {
       return m_table[index];
     }
 
+    inline size_t getSize() {
+      return m_tableSize;
+    }
+  };
+
+  class GlobalColorTable : public ColorTable {
+    unsigned m_backgroundIndex;
+
+  public:
+
+    GlobalColorTable(IReader *reader, LogicalScreenDescriptor *descriptor);
+
     inline Color getBackground() {
       return m_table[m_backgroundIndex];
     }
-
   };
 
 }

@@ -20,7 +20,8 @@ SOURCECXX=
 
 OBJCXX=$(addprefix $(BUILDDIR)/, $(SOURCECXX:%.cpp=%.o))
 
-gifinfo_src=gifinfo.cpp fileReader.cpp header.cpp logicalScreenDescriptor.cpp
+gifinfo_src=gifinfo.cpp fileReader.cpp header.cpp logicalScreenDescriptor.cpp \
+	colorTable.cpp
 gifinfo_obj=$(addprefix $(BUILDDIR)/, $(gifinfo_src:%.cpp=%.o))
 
 ###############################################

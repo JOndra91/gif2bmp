@@ -17,7 +17,7 @@ public:
 
   FileReader(std::ifstream *file);
 
-  virtual size_t allocate(size_t) override;
-  virtual size_t consume(size_t) override;
+  virtual void _allocate(size_t) override;
+  virtual void _consume(size_t) override;
 
 };

@@ -32,6 +32,19 @@ protected:
     m_allocated -= size;
   }
 
+  /**
+   * Ensures that enough bytes is allocated from point of reading head.
+   * Returns amount of allocated bytes.
+   */
+  virtual void _allocate(size_t) = 0;
+
+  /**
+   * Consumes data from point of reading head.
+   * May consume more data than is allocated.
+   * Returns amount of allocated bytes.
+   */
+  virtual void _consume(size_t) = 0;
+
 public:
 
   virtual ~IReader() {
@@ -42,14 +55,29 @@ public:
    * Ensures that enough bytes is allocated from point of reading head.
    * Returns amount of allocated bytes.
    */
-  virtual size_t allocate(size_t) = 0;
+  inline size_t allocate(size_t size) {
+    if(size > m_allocated) {
+      _allocate(size);
+    }
+
+    return m_allocated;
+  };
 
   /**
    * Consumes data from point of reading head.
    * May consume more data than is allocated.
    * Returns amount of allocated bytes.
    */
-  virtual size_t consume(size_t) = 0;
+  inline size_t consume(size_t size) {
+    if(size > m_allocated) {
+      _consume(size);
+    }
+    else {
+      consumeBuffer(size);
+    }
+
+    return m_allocated;
+  };
 
   /**
    * Copies data between buffers with type casting.

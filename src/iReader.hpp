@@ -77,18 +77,19 @@ public:
    * is available using <code>allocate()</code>.
    * This operation does not consume the byte.
    */
-  inline uint8_t peekByte() {
-    return *m_bufferHead;
+  inline uint8_t peekByte(size_t offset = 0) {
+    return m_bufferHead[offset];
   }
 
   /**
    * Reads word (2 bytes) from buffer and converts it to host byte order.
    * You have to ensure that enough bytes is available using
    * <code>allocate()</code>.
+   * Given offset is in bytes.
    * This operation does not consume the word.
    */
-  inline uint16_t peekWord() {
-    uint16_t word = *((uint16_t*)m_bufferHead);
+  inline uint16_t peekWord(size_t offset = 0) {
+    uint16_t word = *((uint16_t*)(m_bufferHead + offset));
     return le16toh(word);
   };
 

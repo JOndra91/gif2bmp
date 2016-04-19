@@ -15,11 +15,4 @@ namespace gif {
     Trailer = 0x3B,
   };
 
-  enum class ExtensionLabel {
-    PlainText = 0x01,
-    GraphicControl = 0xF9,
-    Comment = 0xFE,
-    Application = 0xFF,
-  };
-
 }

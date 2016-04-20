@@ -9,7 +9,7 @@
 using namespace gif;
 
 ImageData::ImageData(IReader *reader) : m_reader(reader) {
-  m_bufferHead = m_bufferTail = m_buffer;
+  assert(m_buffer.empty());
 };
 
 void ImageData::skip() {
@@ -30,10 +30,7 @@ int ImageData::decompress() {
   loadBlock();
   assert(m_subBlockSize > 0);
 
-  m_bufferHead = m_bufferTail = m_buffer;
-
-  int *limit = m_buffer + m_bufferLimit;
-  while(m_bufferTail < limit) {
+  while(m_buffer.size() < m_bufferLimit) {
     unsigned code = nextCode();
 
     if(code == m_lzwClearCode) {
@@ -43,29 +40,29 @@ int ImageData::decompress() {
     else if(code == m_lzwExitCode) {
       assert(m_subBlockSize == 0);
       assert(m_reader->readByte() == 0);
-      *(m_bufferTail++) = -1;
+      m_buffer.push_back(-1);
       break;
     }
 
     if(m_prevEntry == NULL) {
       assert(code < m_lzwTableSize);
       m_prevEntry = m_lzwTable + code;
-      *(m_bufferTail++) = m_prevEntry->value;
+      m_buffer.push_back(m_prevEntry->value);
       continue;
     }
 
     LZWEntry *e;
+    std::deque<int> v;
     if(code < m_lzwTableSize) {
       e = m_lzwTable + code;
 
       do {
-        *m_bufferTail = e->value;
-        m_bufferTail++;
+        v.push_back(e->value);
       } while ((e = e->prev) != NULL);
 
       e = m_lzwTable + code;
 
-      addTableEntry(m_lzwTable[code].value);
+      addTableEntry(e->value);
 
       m_prevEntry = e;
 
@@ -74,16 +71,21 @@ int ImageData::decompress() {
       e = m_prevEntry;
 
       do {
-        *m_bufferTail = e->value;
-        m_bufferTail++;
+        v.push_back(e->value);
       } while ((e = e->prev) != NULL);
+
+      v.push_back(m_prevEntry->value);
 
       addTableEntry(m_prevEntry->value);
     }
 
+    for(auto it = v.rbegin(); it != v.rend(); ++it) {
+      m_buffer.push_back(*it);
+    }
+
   };
 
-  return m_bufferTail - m_bufferHead;
+  return m_buffer.size();
 }
 
 void ImageData::clearTable() {

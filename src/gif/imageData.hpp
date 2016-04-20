@@ -9,6 +9,7 @@
 #include "iReader.hpp"
 #include <cstddef>
 #include <cassert>
+#include <deque>
 
 namespace gif {
 
@@ -20,10 +21,8 @@ namespace gif {
   class ImageData {
 
     IReader *m_reader;
-    static const size_t m_bufferLimit = 256;
-    int m_buffer[m_bufferLimit * 2];
-    int *m_bufferHead;
-    int *m_bufferTail;
+    std::deque<int> m_buffer;
+    static const unsigned m_bufferLimit = 256;
 
     int m_subBlockSize = 0;
     unsigned m_lzwMinimumCodeSize = 0;
@@ -105,14 +104,14 @@ namespace gif {
      * Returns following index to color table or -1 if no index is available.
      */
     inline int next() {
-      if(m_bufferHead >= m_bufferTail) {
+      if(m_buffer.empty()) {
         if(decompress() == 0) {
           return -1;
         }
       }
 
-      int value = *m_bufferHead;
-      m_bufferHead++;
+      int value = m_buffer.front();
+      m_buffer.pop_front();
 
       return value;
     };

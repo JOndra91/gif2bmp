@@ -17,6 +17,7 @@
 #include "gif/imageDescriptor.hpp"
 #include "gif/blocks.hpp"
 #include "gif/canvas.hpp"
+#include "gif/imageData.hpp"
 
 using namespace std;
 using namespace gif;
@@ -87,18 +88,8 @@ int main(int argc, char **argv) {
           subImage.fillColor(globalColorTable->getBackground());
         }
 
-        { // Skip image data
-          r->consume(1);
-          r->allocate(512);
-
-          unsigned blockSize;
-          while((blockSize = r->readByte())) {
-            r->consume(blockSize);
-            if(r->allocated() == 0) {
-              r->allocate(512);
-            }
-          }
-        }
+        ImageData imageData(r);
+        imageData.skip();
 
         image.drawAt(&subImage, imageDescriptor.getTop(), imageDescriptor.getLeft());
       }

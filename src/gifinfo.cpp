@@ -9,13 +9,13 @@
 #include <cstdint>
 #include <cassert>
 
-#include "fileReader.hpp"
-#include "header.hpp"
-#include "logicalScreenDescriptor.hpp"
-#include "colorTable.hpp"
-#include "extension.hpp"
-#include "imageDescriptor.hpp"
-#include "blocks.hpp"
+#include "gif/fileReader.hpp"
+#include "gif/header.hpp"
+#include "gif/logicalScreenDescriptor.hpp"
+#include "gif/colorTable.hpp"
+#include "gif/extension.hpp"
+#include "gif/imageDescriptor.hpp"
+#include "gif/blocks.hpp"
 
 using namespace std;
 using namespace gif;

@@ -11,7 +11,7 @@ SRCDIR=src
 BUILDDIR=build
 LIBDIR=lib
 
-MKDIR=mkdir
+MKDIR=mkdir --parent
 RM=rm -rf
 
 CXXFLAGS=-std=c++11
@@ -20,8 +20,9 @@ SOURCECXX=
 
 OBJCXX=$(addprefix $(BUILDDIR)/, $(SOURCECXX:%.cpp=%.o))
 
-gifinfo_src=gifinfo.cpp fileReader.cpp header.cpp logicalScreenDescriptor.cpp \
-	colorTable.cpp extension.cpp imageDescriptor.cpp
+gifinfo_src=gifinfo.cpp \
+	$(addprefix gif/, fileReader.cpp header.cpp logicalScreenDescriptor.cpp \
+	colorTable.cpp extension.cpp imageDescriptor.cpp)
 gifinfo_obj=$(addprefix $(BUILDDIR)/, $(gifinfo_src:%.cpp=%.o))
 
 ###############################################
@@ -29,30 +30,26 @@ gifinfo_obj=$(addprefix $(BUILDDIR)/, $(gifinfo_src:%.cpp=%.o))
 #
 .PHONY: all run gifinfo
 
-first: gifinfo
+first: a gifinfo
+
+a:
+	echo $(gifinfo_obj)
+	echo $(dir $(gifinfo_obj))
 
 all: gif2bmp
 
 run: gif2bmp
 	gif2bmp
 
-gif2bmp: $(OBJC) $(OBJCXX) | $(BINDIR)
+gif2bmp: $(OBJC) $(OBJCXX)
 	$(CXX) $+ -o $@ $(LDFLAGS)
 
-gifinfo: $(gifinfo_obj) | $(BUILDDIR)
+gifinfo: $(gifinfo_obj)
 	$(CXX) $+ -o $@
 
-$(BUILDDIR)/%.o: $(SRCDIR)/%.cpp | $(BUILDDIR)
+$(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
+	@ $(MKDIR) $(dir $@)
 	$(CXX) -c $(CFLAGS) $(CXXFLAGS) -o $@ $<
-
-$(BUILDDIR):
-	$(MKDIR) $(BUILDDIR)
-
-$(BINDIR):
-	$(MKDIR) $(BINDIR)
-
-$(LIBDIR):
-	$(MKDIR) $(LIBDIR)
 
 clean:
 	$(RM) $(BUILDDIR) $(BINDIR) $(LIBDIR)

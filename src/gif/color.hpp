@@ -7,7 +7,7 @@
 #pragma once
 
 #include <cstdint>
-#include "macros.h"
+#include "../utils/macros.h"
 
 namespace gif {
 

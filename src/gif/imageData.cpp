@@ -96,6 +96,8 @@ void ImageData::clearTable() {
   m_lzwTableLimit = 1 << m_lzwCodeSize;
   m_lzwTableSize = m_lzwExitCode + 1;
 
+  m_prevEntry = NULL;
+
   for(unsigned i = 0; i < m_lzwClearCode; ++i) {
     m_lzwTable[i] = { .value=i, .prev=NULL };
   }

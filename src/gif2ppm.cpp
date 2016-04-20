@@ -89,13 +89,22 @@ int main(int argc, char **argv) {
         }
 
         ImageData imageData(r);
-        imageData.skip();
+
+        int index, j = 0;
+        while((index = imageData.next()) != -1) {
+          subImage.setColor(colorTable->getColor(index), j);
+          ++i;
+        }
 
         image.drawAt(&subImage, imageDescriptor.getTop(), imageDescriptor.getLeft());
+
+        delete localColorTable;
       }
 
       r->allocate(1);
     } while(r->peekByte() != (unsigned)Block::Trailer);
+
+    delete globalColorTable;
 
     ofstream ppm(ppmfile.c_str());
 

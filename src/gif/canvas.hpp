@@ -29,6 +29,10 @@ namespace gif {
       *getColor(x, y) = c;
     }
 
+    inline void setColor(Color c, unsigned index) {
+      *getColor(index % m_width, index / m_width) = c;
+    }
+
     inline unsigned getWidth() {
       return m_width;
     }

@@ -13,11 +13,11 @@ namespace gif {
 
   union ImageDescriptorPackedField {
     struct {
-      bool colorTableFlag : 1;
-      bool interlaceFlag : 1;
-      bool sortFlag : 1;
-      int reserved : 2;
       unsigned colorTableSize : 3;
+      int reserved : 2;
+      bool sortFlag : 1;
+      bool interlaceFlag : 1;
+      bool colorTableFlag : 1;
     };
     uint8_t packedValue;
   };

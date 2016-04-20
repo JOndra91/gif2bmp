@@ -28,5 +28,5 @@ ImageDescriptor::ImageDescriptor(IReader *reader) {
   m_colorTableFlag = packedField.colorTableFlag;
   m_interlaceFlag = packedField.interlaceFlag;
   m_sortFlag = packedField.sortFlag;
-  m_colorTableSize = packedField.colorTableSize;
+  m_colorTableSize = 1 << (packedField.colorTableSize + 1);
 }

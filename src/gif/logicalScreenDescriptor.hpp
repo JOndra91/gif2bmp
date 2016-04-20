@@ -13,10 +13,10 @@ namespace gif {
 
   union LogicalScreenDescriptorPackedField {
     struct {
-      bool colorTableFlag : 1;
-      unsigned colorResolution : 3;
-      bool sortFlag : 1;
       unsigned colorTableSize : 3;
+      bool sortFlag : 1;
+      unsigned colorResolution : 3;
+      bool colorTableFlag : 1;
     };
     uint8_t packedValue;
   };

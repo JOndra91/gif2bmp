@@ -25,16 +25,17 @@ gifinfo_src=gifinfo.cpp \
 	colorTable.cpp extension.cpp imageDescriptor.cpp)
 gifinfo_obj=$(addprefix $(BUILDDIR)/, $(gifinfo_src:%.cpp=%.o))
 
+gif2ppm_src=gif2ppm.cpp \
+	$(addprefix gif/, fileReader.cpp header.cpp logicalScreenDescriptor.cpp \
+	colorTable.cpp extension.cpp imageDescriptor.cpp canvas.cpp)
+gif2ppm_obj=$(addprefix $(BUILDDIR)/, $(gif2ppm_src:%.cpp=%.o))
+
 ###############################################
 # Make rules
 #
 .PHONY: all run gifinfo
 
-first: a gifinfo
-
-a:
-	echo $(gifinfo_obj)
-	echo $(dir $(gifinfo_obj))
+first: gifinfo gif2ppm
 
 all: gif2bmp
 
@@ -45,6 +46,9 @@ gif2bmp: $(OBJC) $(OBJCXX)
 	$(CXX) $+ -o $@ $(LDFLAGS)
 
 gifinfo: $(gifinfo_obj)
+	$(CXX) $+ -o $@
+
+gif2ppm: $(gif2ppm_obj)
 	$(CXX) $+ -o $@
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp

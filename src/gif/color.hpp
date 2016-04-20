@@ -19,9 +19,10 @@ namespace gif {
 
   struct Color {
 
-    Color() {
-      r = g = b = 0;
-    };
+    Color() : r(0), g(0), b(0) {};
+
+    Color(unsigned red, unsigned green, unsigned blue)
+      : r(red), g(green), b(blue) {};
 
     Color(const Color &c) {
       r = c.r;

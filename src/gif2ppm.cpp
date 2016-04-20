@@ -90,10 +90,58 @@ int main(int argc, char **argv) {
 
         ImageData imageData(r);
 
-        int index, j = 0;
-        while((index = imageData.next()) != -1) {
-          subImage.setColor(colorTable->getColor(index), j);
-          ++j;
+        int index;
+
+        if(imageDescriptor.isInterlaced()) {
+          for(unsigned y = 0; y < imageDescriptor.getHeight(); y +=8) {
+            for(unsigned x = 0; x < imageDescriptor.getWidth(); ++x) {
+              index = imageData.next();
+              assert(index != -1);
+
+              subImage.setColor(colorTable->getColor(index), x, y);
+            }
+          }
+
+          for(unsigned y = 4; y < imageDescriptor.getHeight(); y +=8) {
+            for(unsigned x = 0; x < imageDescriptor.getWidth(); ++x) {
+              index = imageData.next();
+              assert(index != -1);
+
+              subImage.setColor(colorTable->getColor(index), x, y);
+            }
+          }
+
+          for(unsigned y = 2; y < imageDescriptor.getHeight(); y +=4) {
+            for(unsigned x = 0; x < imageDescriptor.getWidth(); ++x) {
+              index = imageData.next();
+              assert(index != -1);
+
+              subImage.setColor(colorTable->getColor(index), x, y);
+            }
+          }
+
+          for(unsigned y = 1; y < imageDescriptor.getHeight(); y +=2) {
+            for(unsigned x = 0; x < imageDescriptor.getWidth(); ++x) {
+              index = imageData.next();
+              assert(index != -1);
+
+              subImage.setColor(colorTable->getColor(index), x, y);
+            }
+          }
+
+          assert(imageData.next() == -1);
+        }
+        else {
+          for(unsigned y = 0; y < imageDescriptor.getHeight(); ++y) {
+            for(unsigned x = 0; x < imageDescriptor.getWidth(); ++x) {
+              index = imageData.next();
+              assert(index != -1);
+
+              subImage.setColor(colorTable->getColor(index), x, y);
+            }
+          }
+
+          assert(imageData.next() == -1);
         }
 
         image.drawAt(&subImage, imageDescriptor.getTop(), imageDescriptor.getLeft());

@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
         int index, j = 0;
         while((index = imageData.next()) != -1) {
           subImage.setColor(colorTable->getColor(index), j);
-          ++i;
+          ++j;
         }
 
         image.drawAt(&subImage, imageDescriptor.getTop(), imageDescriptor.getLeft());

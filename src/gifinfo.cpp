@@ -123,8 +123,8 @@ int main(int argc, char **argv) {
         printf("    Size: %u × %u\n", imageDescriptor.getWidth(), imageDescriptor.getHeight());
         printf("    Interlaced: %s\n", boolStr[imageDescriptor.isInterlaced()]);
         printf("    Local color table: %s\n", boolStr[imageDescriptor.hasColorTable()]);
-        printf("    Global color table size: %u\n", imageDescriptor.getColorTableSize());
-        printf("    Global color table ordered: %s\n", boolStr[imageDescriptor.isColorTableOrdered()]);
+        printf("    Local color table size: %u\n", imageDescriptor.getColorTableSize());
+        printf("    Local color table ordered: %s\n", boolStr[imageDescriptor.isColorTableOrdered()]);
 
         if(imageDescriptor.hasColorTable()) {
           ColorTable localColorTable(r, imageDescriptor.getColorTableSize());

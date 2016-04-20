@@ -51,32 +51,32 @@ int ImageData::decompress() {
       continue;
     }
 
-    LZWEntry *e;
+    LZWEntry *e, *f;
     std::deque<int> v;
     if(code < m_lzwTableSize) {
       e = m_lzwTable + code;
 
       do {
+        f = e;
         v.push_back(e->value);
       } while ((e = e->prev) != NULL);
 
-      e = m_lzwTable + code;
+      addTableEntry(f->value);
 
-      addTableEntry(e->value);
-
-      m_prevEntry = e;
+      m_prevEntry = m_lzwTable + code;
 
     }
     else {
       e = m_prevEntry;
 
       do {
+        f = e;
         v.push_back(e->value);
       } while ((e = e->prev) != NULL);
 
-      v.push_back(m_prevEntry->value);
+      v.push_front(f->value);
 
-      addTableEntry(m_prevEntry->value);
+      m_prevEntry = addTableEntry(f->value);
     }
 
     for(auto it = v.rbegin(); it != v.rend(); ++it) {

@@ -81,7 +81,7 @@ namespace gif {
       return byte;
     }
 
-    inline void addTableEntry(unsigned value) {
+    inline LZWEntry* addTableEntry(unsigned value) {
       m_lzwTable[m_lzwTableSize] = { .value=value, .prev=m_prevEntry };
       m_lzwTableSize++;
 
@@ -89,6 +89,8 @@ namespace gif {
         m_lzwCodeSize++;
         m_lzwTableLimit <<= 1;
       }
+
+      return m_lzwTable + m_lzwTableSize - 1;
     }
 
   public:

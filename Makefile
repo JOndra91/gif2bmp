@@ -13,7 +13,7 @@ LIBDIR=lib
 MKDIR=mkdir --parent
 RM=rm -rf
 
-CFLAGS=
+CFLAGS=-g -Wall
 CXXFLAGS=-g -Wall -std=c++11
 
 gifinfo_src=gifinfo.cpp \
@@ -30,24 +30,30 @@ gif2ppm_obj=$(addprefix $(BUILDDIR)/, $(gif2ppm_src:%.cpp=%.o))
 gif2bmp_a_src=gif2bmp.cpp\
 	$(addprefix gif/, fileReader.cpp header.cpp logicalScreenDescriptor.cpp \
 	colorTable.cpp extension.cpp imageDescriptor.cpp imageData.cpp)
-gif2bmp_a_obj=$(addprefix $(BUILDDIR)/, $(gif2bmp_src:%.cpp=%.o) \
+gif2bmp_a_obj=$(addprefix $(BUILDDIR)/, $(gif2bmp_a_src:%.cpp=%.o) \
 	$(gif2bmp_a_src_c:%.c=%.o))
+
+gif2bmp_src=main.c
+gif2bmp_obj=$(addprefix $(BUILDDIR)/, $(gif2bmp_src:%.c=%.o))
 
 ###############################################
 # Make rules
 #
-.PHONY: all run gifinfo
+.PHONY: all run
 
 first: all
 
-all: gifinfo gif2ppm $(LIBDIR)/gif2bmp.a
+all: gifinfo gif2ppm $(LIBDIR)/libgif2bmp.a gif2bmp
 
 run: gif2bmp
 	gif2bmp
 
-$(LIBDIR)/gif2bmp.a: $(gif2bmp_a_obj)
+$(LIBDIR)/libgif2bmp.a: $(gif2bmp_a_obj)
 	@ $(MKDIR) $(dir $@)
 	$(AR) $@ $+
+
+gif2bmp: $(LIBDIR)/libgif2bmp.a $(gif2bmp_obj)
+	$(CC) $(gif2bmp_obj) -L$(LIBDIR) -lgif2bmp -lstdc++ -o $@
 
 gifinfo: $(gifinfo_obj)
 	$(CXX) $+ -o $@

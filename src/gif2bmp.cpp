@@ -138,22 +138,22 @@ int main(int argc, char **argv) {
 
     bmpFHeader = {
       .type = htole16(0x4D42),
-      .offBits = sizeof(bmp::FileHeader) + sizeof(bmp::InfoHeader),
+      .offBits = htole32(sizeof(bmp::FileHeader) + sizeof(bmp::InfoHeader)),
     };
 
     unsigned rowPadding = (4 - (image.getWidth() * sizeof(BGR8ColorPacked)) % 4) % 4;
     bmpIHeader = {
-      .size = 40,
-      .width = (int32_t)image.getWidth(),
-      .height = (int32_t)image.getHeight(),
-      .planes = 1,
-      .bitCount = 24,
+      .size = htole32(40),
+      .width = htole32((int32_t)image.getWidth()),
+      .height = htole32((int32_t)image.getHeight()),
+      .planes = htole16(1),
+      .bitCount = htole16(24),
       .compression = 0,
-      .sizeImage = (uint32_t)
+      .sizeImage = htole32((uint32_t)
           ((image.getWidth() * sizeof(BGR8ColorPacked) + rowPadding) *
-          image.getHeight()),
-      .xPelsPerMeter = 2835,
-      .yPelsPerMeter = 2835,
+          image.getHeight())),
+      .xPelsPerMeter = htole32(2835),
+      .yPelsPerMeter = htole32(2835),
       .clrUsed = 0,
       .clrImportant = 0,
     };

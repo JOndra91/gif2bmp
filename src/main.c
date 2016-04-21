@@ -72,6 +72,9 @@ int main(int argc, char** argv) {
   tGIF2BMP stats;
   int status = gif2bmp(&stats, inputFile, outputFile);
 
+  fclose(inputFile);
+  fclose(outputFile);
+
   if(status == GIF2BMP_ERROR) {
     return 3;
   }

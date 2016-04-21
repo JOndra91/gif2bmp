@@ -23,7 +23,7 @@ namespace image {
     }
 
     ~Canvas() {
-      delete m_bitmap;
+      delete[] m_bitmap;
     }
 
     inline Color* getColor(unsigned x, unsigned y) {

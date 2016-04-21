@@ -27,7 +27,7 @@ ColorTable::ColorTable(IReader *reader, size_t size) {
 }
 
 ColorTable::~ColorTable() {
-  delete m_table;
+  delete[] m_table;
 }
 
 GlobalColorTable::GlobalColorTable(IReader *reader, LogicalScreenDescriptor *descriptor)

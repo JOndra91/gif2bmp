@@ -155,7 +155,7 @@ int gif2bmp(tGIF2BMP *gif2bmp, FILE *inputFile, FILE *outputFile) {
 
     fwrite(rowBuffer, sizeof(uint8_t), rowBufferSize, outputFile);
   }
-  delete rowBuffer;
+  delete[] rowBuffer;
 
   gif2bmp->bmpSize = imageDataSize + headerSize;
 

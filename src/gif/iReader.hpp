@@ -48,7 +48,7 @@ protected:
 public:
 
   virtual ~IReader() {
-      delete m_buffer;
+      delete[] m_buffer;
   };
 
   /**

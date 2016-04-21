@@ -36,7 +36,7 @@ void IStreamReader::_allocate(size_t size) {
 
       memcpy(newBuffer, m_buffer, sizeof(uint8_t) * m_allocated);
 
-      delete m_buffer;
+      delete[] m_buffer;
 
       m_buffer = m_bufferHead = newBuffer;
     }

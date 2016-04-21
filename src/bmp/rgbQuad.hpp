@@ -7,6 +7,7 @@
 #pragma once
 
 #include <cstdint>
+#include "../utils/macros.h"
 
 namespace bmp {
 
@@ -15,6 +16,6 @@ namespace bmp {
     uint8_t g;
     uint8_t r;
     uint8_t reserved;
-  };
+  } PACKED;
 
 }

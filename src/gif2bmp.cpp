@@ -142,10 +142,6 @@ int main(int argc, char **argv) {
     };
 
     unsigned rowPadding = (4 - (image.getWidth() * sizeof(BGR8ColorPacked)) % 4) % 4;
-    printf("Padding: %u\n", rowPadding);
-    printf("Width: %u\n", image.getWidth());
-    printf("Row bytes: %lu\n", sizeof(BGR8ColorPacked) * image.getWidth());
-    assert(sizeof(BGR8ColorPacked) == 3);
     bmpIHeader = {
       .size = 40,
       .width = (int32_t)image.getWidth(),

@@ -29,7 +29,7 @@ void IStreamReader::_allocate(size_t size) {
   required = size - m_allocated;
 
   if(required > available()) {
-    if(required > m_bufferSize) {
+    if(required > m_bufferSize - m_allocated) {
       m_bufferSize = required + required/2;
 
       uint8_t *newBuffer = new uint8_t[m_bufferSize];
@@ -42,11 +42,11 @@ void IStreamReader::_allocate(size_t size) {
     }
     else {
       memmove(m_buffer, m_bufferHead, m_allocated);
-      m_bufferHead = m_buffer + m_allocated;
+      m_bufferHead = m_buffer;
     }
   }
 
-  m_allocated += read(m_bufferHead + m_allocated, required);
+  m_allocated += read(m_bufferHead + m_allocated, available());
 }
 
 void IStreamReader::_consume(size_t size) {

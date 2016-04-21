@@ -17,19 +17,22 @@ CFLAGS=-g -Wall
 CXXFLAGS=-g -Wall -std=c++11
 
 gifinfo_src=gifinfo.cpp \
-	$(addprefix gif/, fStreamReader.cpp header.cpp logicalScreenDescriptor.cpp \
-	colorTable.cpp extension.cpp imageDescriptor.cpp imageData.cpp)
+	$(addprefix gif/, iStreamReader.cpp fStreamReader.cpp header.cpp \
+	logicalScreenDescriptor.cpp colorTable.cpp extension.cpp imageDescriptor.cpp \
+	imageData.cpp)
 gifinfo_obj=$(addprefix $(BUILDDIR)/, $(gifinfo_src:%.cpp=%.o))
 
 gif2ppm_src=gif2ppm.cpp \
-	$(addprefix gif/, fStreamReader.cpp header.cpp logicalScreenDescriptor.cpp \
-	colorTable.cpp extension.cpp imageDescriptor.cpp imageData.cpp)
+	$(addprefix gif/, iStreamReader.cpp fStreamReader.cpp header.cpp \
+	logicalScreenDescriptor.cpp colorTable.cpp extension.cpp imageDescriptor.cpp \
+	imageData.cpp)
 gif2ppm_obj=$(addprefix $(BUILDDIR)/, $(gif2ppm_src:%.cpp=%.o))
 
 # gif2bmp_a_src_c=gif2bmp.c
 gif2bmp_a_src=gif2bmp.cpp\
-	$(addprefix gif/, fileReader.cpp header.cpp logicalScreenDescriptor.cpp \
-	colorTable.cpp extension.cpp imageDescriptor.cpp imageData.cpp)
+	$(addprefix gif/, iStreamReader.cpp fileReader.cpp header.cpp \
+	logicalScreenDescriptor.cpp colorTable.cpp extension.cpp imageDescriptor.cpp \
+	imageData.cpp)
 gif2bmp_a_obj=$(addprefix $(BUILDDIR)/, $(gif2bmp_a_src:%.cpp=%.o) \
 	$(gif2bmp_a_src_c:%.c=%.o))
 

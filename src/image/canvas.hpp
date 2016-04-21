@@ -48,11 +48,11 @@ namespace image {
 
     void drawAt(Canvas *src, unsigned top, unsigned left) {
 
-      for(unsigned y = 0; y < m_height; ++y) {
+      for(unsigned y = 0; y < src->m_height; ++y) {
         Color *srcC = src->getColor(0, y);
         Color *dstC = getColor(left, y + top);
 
-        for(unsigned x = 0; x < m_width; ++x) {
+        for(unsigned x = 0; x < src->m_width; ++x) {
           dstC[x] = srcC[x];
         }
       }

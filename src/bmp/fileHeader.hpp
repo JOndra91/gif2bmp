@@ -4,11 +4,12 @@
  * Created: 2016/04/21
  */
 
- #pragma once
+#pragma once
 
- #include <cstdint>
+#include <cstdint>
+#include "../utils/macros.h"
 
- namespace bmp {
+namespace bmp {
 
   struct FileHeader {
     uint16_t type;
@@ -16,6 +17,6 @@
     uint16_t reserved1;
     uint16_t reserved2;
     uint32_t offBits;
-  };
+  } PACKED;
 
- }
+}

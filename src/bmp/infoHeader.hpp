@@ -4,11 +4,12 @@
  * Created: 2016/04/21
  */
 
- #pragma once
+#pragma once
 
- #include <cstdint>
+#include <cstdint>
+#include "../utils/macros.h"
 
- namespace bmp {
+namespace bmp {
 
   struct InfoHeader {
     uint32_t size;
@@ -22,6 +23,6 @@
     int32_t yPelsPerMeter;
     uint32_t clrUsed;
     uint32_t clrImportant;
-  };
+  } PACKED;
 
- }
+}

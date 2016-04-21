@@ -4,3 +4,4 @@ test/*
 !test/*.gif
 gifinfo
 gif2ppm
+gif2bmp

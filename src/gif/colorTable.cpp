@@ -4,10 +4,10 @@
  * Created: 2016/04/19
  */
 
-
 #include "colorTable.hpp"
 
 using namespace gif;
+
 
 ColorTable::ColorTable(IReader *reader, size_t size) {
   m_tableSize = size;
@@ -20,7 +20,7 @@ ColorTable::ColorTable(IReader *reader, size_t size) {
 
   RGBColor *end = m_table + m_tableSize;
   for(RGBColor *c = m_table; c != end; c++, cp++) {
-    *c = RGBColor(cp->r, cp->g, cp->b);
+    *c = cp->unpackRGB();
   }
 
   reader->consume(sizeof(RGB8ColorPacked) * m_tableSize);

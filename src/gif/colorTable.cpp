@@ -5,7 +5,6 @@
  */
 
 
-#include "color.hpp"
 #include "colorTable.hpp"
 
 using namespace gif;
@@ -14,16 +13,17 @@ ColorTable::ColorTable(IReader *reader, size_t size) {
   m_tableSize = size;
 
   m_table = new RGBColor[m_tableSize];
-  reader->allocate(sizeof(ColorPacked) * m_tableSize);
+  reader->allocate(sizeof(RGB8ColorPacked) * m_tableSize);
 
-  const ColorPacked *cp = reinterpret_cast<const ColorPacked*>(reader->buffer());
+  const RGB8ColorPacked *cp
+    = reinterpret_cast<const RGB8ColorPacked*>(reader->buffer());
 
   RGBColor *end = m_table + m_tableSize;
   for(RGBColor *c = m_table; c != end; c++, cp++) {
     *c = RGBColor(cp->r, cp->g, cp->b);
   }
 
-  reader->consume(sizeof(ColorPacked) * m_tableSize);
+  reader->consume(sizeof(RGB8ColorPacked) * m_tableSize);
 }
 
 ColorTable::~ColorTable() {

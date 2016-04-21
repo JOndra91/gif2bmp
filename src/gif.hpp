@@ -7,7 +7,6 @@
 #pragma once
 
 #include "gif/blocks.hpp"
-#include "gif/color.hpp"
 #include "gif/colorTable.hpp"
 #include "gif/extension.hpp"
 #include "gif/fileReader.hpp"

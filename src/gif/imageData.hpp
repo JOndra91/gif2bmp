@@ -85,7 +85,7 @@ namespace gif {
       m_lzwTable[m_lzwTableSize] = { .value=value, .prev=m_prevEntry };
       m_lzwTableSize++;
 
-      if(m_lzwTableSize == m_lzwTableLimit) {
+      if(m_lzwTableSize == m_lzwTableLimit && m_lzwCodeSize != 12) {
         m_lzwCodeSize++;
         m_lzwTableLimit <<= 1;
       }

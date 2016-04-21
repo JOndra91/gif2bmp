@@ -30,7 +30,7 @@ int ImageData::decompress() {
 
   while(m_buffer.size() < m_bufferLimit) {
     unsigned code = nextCode();
-    assert_return(code != -1, -1);
+    assert_return(code != (unsigned)-1, -1);
 
     if(code == m_lzwClearCode) {
       clearTable();

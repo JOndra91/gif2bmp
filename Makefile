@@ -16,6 +16,8 @@ RM=rm -rf
 CFLAGS=-g -Wall
 CXXFLAGS=-g -Wall -std=c++11
 
+BINARIES=gif2bmp gif2ppm gifinfo
+
 gifinfo_src=gifinfo.cpp \
 	$(addprefix gif/, iStreamReader.cpp fStreamReader.cpp header.cpp \
 	logicalScreenDescriptor.cpp colorTable.cpp extension.cpp imageDescriptor.cpp \
@@ -42,14 +44,11 @@ gif2bmp_obj=$(addprefix $(BUILDDIR)/, $(gif2bmp_src:%.c=%.o))
 ###############################################
 # Make rules
 #
-.PHONY: all run
+.PHONY: all
 
-first: all
+first: gif2bmp
 
 all: gifinfo gif2ppm $(LIBDIR)/libgif2bmp.a gif2bmp
-
-run: gif2bmp
-	gif2bmp
 
 $(LIBDIR)/libgif2bmp.a: $(gif2bmp_a_obj)
 	@ $(MKDIR) $(dir $@)
@@ -68,13 +67,9 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 	@ $(MKDIR) $(dir $@)
 	$(CXX) -c $(CXXFLAGS) -o $@ $<
 
-# $(BUILDDIR)/gif2bmp.o: $(SRCDIR)/gif2bmp.c
-# 	@ $(MKDIR) $(dir $@)
-# 	$(CXX) -c $(CXXFLAGS) -o $@ $<
-
 $(BUILDDIR)/%.o: $(SRCDIR)/%.c
 	@ $(MKDIR) $(dir $@)
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 clean:
-	$(RM) $(BUILDDIR) $(BINDIR) $(LIBDIR)
+	$(RM) $(BUILDDIR) $(BINARIES) $(LIBDIR)

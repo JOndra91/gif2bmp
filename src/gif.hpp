@@ -10,6 +10,7 @@
 #include "gif/colorTable.hpp"
 #include "gif/extension.hpp"
 #include "gif/fStreamReader.hpp"
+#include "gif/fileReader.hpp"
 #include "gif/header.hpp"
 #include "gif/imageData.hpp"
 #include "gif/imageDescriptor.hpp"

@@ -8,6 +8,8 @@
 #include <cstdio>
 #include <cstdint>
 #include <cassert>
+#include <vector>
+#include <tuple>
 
 #include "gif.hpp"
 #include "image.hpp"
@@ -85,48 +87,26 @@ int main(int argc, char **argv) {
         ImageData imageData(r);
 
         int index;
-
+        vector<pair<unsigned, unsigned>> rowOrder;
         if(imageDescriptor.isInterlaced()) {
-          for(unsigned y = 0; y < imageDescriptor.getHeight(); y +=8) {
-            for(unsigned x = 0; x < imageDescriptor.getWidth(); ++x) {
-              index = imageData.next();
-              assert(index != -1);
-
-              subImage.setColor(colorTable->getColor(index), x, y);
-            }
-          }
-
-          for(unsigned y = 4; y < imageDescriptor.getHeight(); y +=8) {
-            for(unsigned x = 0; x < imageDescriptor.getWidth(); ++x) {
-              index = imageData.next();
-              assert(index != -1);
-
-              subImage.setColor(colorTable->getColor(index), x, y);
-            }
-          }
-
-          for(unsigned y = 2; y < imageDescriptor.getHeight(); y +=4) {
-            for(unsigned x = 0; x < imageDescriptor.getWidth(); ++x) {
-              index = imageData.next();
-              assert(index != -1);
-
-              subImage.setColor(colorTable->getColor(index), x, y);
-            }
-          }
-
-          for(unsigned y = 1; y < imageDescriptor.getHeight(); y +=2) {
-            for(unsigned x = 0; x < imageDescriptor.getWidth(); ++x) {
-              index = imageData.next();
-              assert(index != -1);
-
-              subImage.setColor(colorTable->getColor(index), x, y);
-            }
-          }
-
-          assert(imageData.next() == -1);
+          rowOrder = {
+            make_pair(0, 8),
+            make_pair(4, 8),
+            make_pair(2, 4),
+            make_pair(1, 2),
+          };
         }
         else {
-          for(unsigned y = 0; y < imageDescriptor.getHeight(); ++y) {
+          rowOrder = {
+            make_pair(0, 1),
+          };
+        }
+
+        for(auto &order : rowOrder) {
+          unsigned offset = order.first;
+          unsigned step = order.second;
+
+          for(unsigned y = offset; y < imageDescriptor.getHeight(); y += step) {
             for(unsigned x = 0; x < imageDescriptor.getWidth(); ++x) {
               index = imageData.next();
               assert(index != -1);
@@ -134,9 +114,9 @@ int main(int argc, char **argv) {
               subImage.setColor(colorTable->getColor(index), x, y);
             }
           }
-
-          assert(imageData.next() == -1);
         }
+
+        assert(imageData.next() == -1);
 
         image.drawAt(&subImage, imageDescriptor.getTop(), imageDescriptor.getLeft());
 

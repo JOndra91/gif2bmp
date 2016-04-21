@@ -9,4 +9,6 @@
 
 #define PACKED __attribute__((packed))
 
+#define assert_return(assertion, returnCode) do{if(!(assertion)) return returnCode;} while(0)
+
 #endif // MACROS_H

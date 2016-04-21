@@ -7,7 +7,7 @@
 #include "imageDescriptor.hpp"
 #include "blocks.hpp"
 
-#include <cassert>
+#include "../utils/macros.h"
 
 using namespace gif;
 
@@ -15,8 +15,11 @@ ImageDescriptor::ImageDescriptor(IReader *reader) {
   ImageDescriptorPackedField packedField;
   reader->allocate(10);
 
-  // TODO: Proper handling
-  assert(reader->readByte() == (unsigned)Block::ImageSeparator);
+  m_valid = reader->readByte() == (unsigned)Block::ImageSeparator;
+
+  if(!m_valid) {
+    return;
+  }
 
   m_left = reader->readWord();
   m_top = reader->readWord();

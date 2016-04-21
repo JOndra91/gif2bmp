@@ -53,6 +53,8 @@ int gif2bmp(tGIF2BMP *gif2bmp, FILE *inputFile, FILE *outputFile) {
     else {
       ImageDescriptor imageDescriptor(r);
 
+      gif2bmp_assert(imageDescriptor.isValid());
+
       ColorTable *colorTable = globalColorTable.get();
       unique_ptr<ColorTable> localColorTable;
       if(imageDescriptor.hasColorTable()) {

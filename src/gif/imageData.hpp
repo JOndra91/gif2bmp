@@ -8,8 +8,9 @@
 
 #include "iReader.hpp"
 #include <cstddef>
-#include <cassert>
 #include <deque>
+
+#include "../utils/macros.h"
 
 namespace gif {
 
@@ -65,7 +66,7 @@ namespace gif {
 
       while(m_lzwBitCount < m_lzwCodeSize) {
         loadBlock();
-        assert(m_subBlockSize > 0);
+        assert_return(m_subBlockSize > 0, -1);
 
         byte = m_reader->readByte();
         m_subBlockSize--;
@@ -107,9 +108,7 @@ namespace gif {
      */
     inline int next() {
       if(m_buffer.empty()) {
-        if(decompress() == 0) {
-          return -1;
-        }
+        assert_return(decompress() > 0, -1);
       }
 
       int value = m_buffer.front();

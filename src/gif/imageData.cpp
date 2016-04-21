@@ -8,9 +8,7 @@
 
 using namespace gif;
 
-ImageData::ImageData(IReader *reader) : m_reader(reader) {
-  assert(m_buffer.empty());
-};
+ImageData::ImageData(IReader *reader) : m_reader(reader) {};
 
 void ImageData::skip() {
   m_reader->allocate(512);
@@ -28,24 +26,25 @@ void ImageData::skip() {
 int ImageData::decompress() {
 
   loadBlock();
-  assert(m_subBlockSize > 0);
+  assert_return(m_subBlockSize > 0, -1);
 
   while(m_buffer.size() < m_bufferLimit) {
     unsigned code = nextCode();
+    assert_return(code != -1, -1);
 
     if(code == m_lzwClearCode) {
       clearTable();
       continue;
     }
     else if(code == m_lzwExitCode) {
-      assert(m_subBlockSize == 0);
-      assert(m_reader->readByte() == 0);
+      assert_return(m_subBlockSize == 0, -1);
+      assert_return(m_reader->readByte() == 0, -1);
       m_buffer.push_back(-1);
       break;
     }
 
     if(m_prevEntry == NULL) {
-      assert(code < m_lzwTableSize);
+      assert_return(code < m_lzwTableSize, -1);
       m_prevEntry = m_lzwTable + code;
       m_buffer.push_back(m_prevEntry->value);
       continue;

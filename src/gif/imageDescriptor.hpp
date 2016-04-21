@@ -34,6 +34,8 @@ namespace gif {
     bool m_sortFlag;
     unsigned m_colorTableSize;
 
+    bool m_valid;
+
   public:
 
     ImageDescriptor(IReader *reader);
@@ -69,6 +71,10 @@ namespace gif {
     inline unsigned getColorTableSize() {
       return m_colorTableSize;
     };
+
+    inline bool isValid() {
+      return m_valid;
+    }
 
   };
 

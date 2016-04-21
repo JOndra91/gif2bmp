@@ -18,8 +18,11 @@
 #include "gif/blocks.hpp"
 #include "gif/imageData.hpp"
 
+#include "image/color.hpp"
+
 using namespace std;
 using namespace gif;
+using namespace image;
 
 const char *boolStr[2] = {
   "No", "Yes"
@@ -68,7 +71,7 @@ int main(int argc, char **argv) {
     if(lsd.hasColorTable()) {
       GlobalColorTable globalColorTable(r, &lsd);
 
-      Color bg = globalColorTable.getBackground();
+      RGBColor bg = globalColorTable.getBackground();
       printf("  Background color: rgb(%u, %u, %u)\n",
         bg.r, bg.g, bg.b);
 
@@ -77,7 +80,7 @@ int main(int argc, char **argv) {
       unsigned size = globalColorTable.getSize();
 
       for(unsigned i = 0; i < size; ++i) {
-        Color c = globalColorTable.getColor(i);
+        RGBColor c = globalColorTable.getColor(i);
         printf("    Color[%u]: rgb(%u, %u, %u)\n", i, c.r, c.g, c.b);
       }
     }
@@ -135,7 +138,7 @@ int main(int argc, char **argv) {
           unsigned size = localColorTable.getSize();
 
           for(unsigned i = 0; i < size; ++i) {
-            Color c = localColorTable.getColor(i);
+            RGBColor c = localColorTable.getColor(i);
             printf("      Color[%u]: rgb(%u, %u, %u)\n", i, c.r, c.g, c.b);
           }
         }

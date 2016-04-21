@@ -16,11 +16,14 @@
 #include "gif/extension.hpp"
 #include "gif/imageDescriptor.hpp"
 #include "gif/blocks.hpp"
-#include "gif/canvas.hpp"
 #include "gif/imageData.hpp"
+
+#include "image/canvas.hpp"
+#include "image/color.hpp"
 
 using namespace std;
 using namespace gif;
+using namespace image;
 
 int main(int argc, char **argv) {
 
@@ -58,7 +61,7 @@ int main(int argc, char **argv) {
 
     LogicalScreenDescriptor lsd(r);
 
-    Canvas image(lsd.getWidth(), lsd.getHeight());
+    Canvas<RGBColor> image(lsd.getWidth(), lsd.getHeight());
     GlobalColorTable *globalColorTable = NULL;
 
     if(lsd.hasColorTable()) {
@@ -82,7 +85,7 @@ int main(int argc, char **argv) {
           colorTable = localColorTable;
         }
 
-        Canvas subImage(imageDescriptor.getWidth(), imageDescriptor.getHeight());
+        Canvas<RGBColor> subImage(imageDescriptor.getWidth(), imageDescriptor.getHeight());
 
         if(globalColorTable) {
           subImage.fillColor(globalColorTable->getBackground());
@@ -161,10 +164,10 @@ int main(int argc, char **argv) {
     ppm << "255" << endl;
 
     for(unsigned y = 0; y < image.getHeight(); ++y) {
-      Color *ptr = image.getColor(0, y);
+      RGBColor *ptr = image.getColor(0, y);
 
       for(unsigned x = 0; x < image.getWidth(); ++x) {
-        Color c = ptr[x];
+        RGBColor c = ptr[x];
         ppm << c.r << " " << c.g << " " << c.b << "  ";
       }
 

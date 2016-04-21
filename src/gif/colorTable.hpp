@@ -7,15 +7,17 @@
 #pragma once
 
 #include "iReader.hpp"
-#include "color.hpp"
+#include "../image/color.hpp"
 #include "logicalScreenDescriptor.hpp"
+
+using namespace image;
 
 namespace gif {
 
   class ColorTable {
 
 protected:
-    Color *m_table;
+    RGBColor *m_table;
     unsigned m_tableSize;
 
   public:
@@ -23,7 +25,7 @@ protected:
     ColorTable(IReader *reader, size_t size);
     ~ColorTable();
 
-    inline Color getColor(unsigned index) {
+    inline RGBColor getColor(unsigned index) {
       return m_table[index];
     }
 
@@ -39,7 +41,7 @@ protected:
 
     GlobalColorTable(IReader *reader, LogicalScreenDescriptor *descriptor);
 
-    inline Color getBackground() {
+    inline RGBColor getBackground() {
       return m_table[m_backgroundIndex];
     }
   };

@@ -27,7 +27,7 @@ gifinfo_obj=$(addprefix $(BUILDDIR)/, $(gifinfo_src:%.cpp=%.o))
 
 gif2ppm_src=gif2ppm.cpp \
 	$(addprefix gif/, fileReader.cpp header.cpp logicalScreenDescriptor.cpp \
-	colorTable.cpp extension.cpp imageDescriptor.cpp canvas.cpp imageData.cpp)
+	colorTable.cpp extension.cpp imageDescriptor.cpp imageData.cpp)
 gif2ppm_obj=$(addprefix $(BUILDDIR)/, $(gif2ppm_src:%.cpp=%.o))
 
 ###############################################

@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
   for(int i = 1; i < argc; ++i) {
     ifstream gif(argv[i]);
 
-    FileReader f(&gif);
+    FStreamReader f(&gif);
     IReader *r = (IReader*)&f;
 
     Header h(r);

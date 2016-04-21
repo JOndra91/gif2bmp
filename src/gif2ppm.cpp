@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
     string ppmfile(argv[i]);
     ppmfile.replace(ppmfile.end()-4, ppmfile.end(), ".ppm");
 
-    FileReader f(&gif);
+    FStreamReader f(&gif);
     IReader *r = (IReader*)&f;
 
     Header h(r);

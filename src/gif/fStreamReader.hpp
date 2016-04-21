@@ -1,5 +1,5 @@
 /**
- * File: fileReader.hpp
+ * File: fStreamReader.hpp
  * Author: Ondřej Janošík <xjanos12@stud.fit.vutbr.cz>
  * Created: 2016/04/19
  */
@@ -9,13 +9,13 @@
 #include "iReader.hpp"
 #include <fstream>
 
-class FileReader : IReader {
+class FStreamReader : IReader {
 
   std::ifstream *m_file;
 
 public:
 
-  FileReader(std::ifstream *file);
+  FStreamReader(std::ifstream *file);
 
   virtual void _allocate(size_t) override;
   virtual void _consume(size_t) override;

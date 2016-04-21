@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
     string bmpfile(argv[i]);
     bmpfile.replace(bmpfile.end()-4, bmpfile.end(), ".bmp");
 
-    FileReader f(&gif);
+    FStreamReader f(&gif);
     IReader *r = (IReader*)&f;
 
     Header h(r);

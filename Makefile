@@ -21,17 +21,17 @@ SOURCECXX=
 OBJCXX=$(addprefix $(BUILDDIR)/, $(SOURCECXX:%.cpp=%.o))
 
 gifinfo_src=gifinfo.cpp \
-	$(addprefix gif/, fileReader.cpp header.cpp logicalScreenDescriptor.cpp \
+	$(addprefix gif/, fStreamReader.cpp header.cpp logicalScreenDescriptor.cpp \
 	colorTable.cpp extension.cpp imageDescriptor.cpp imageData.cpp)
 gifinfo_obj=$(addprefix $(BUILDDIR)/, $(gifinfo_src:%.cpp=%.o))
 
 gif2ppm_src=gif2ppm.cpp \
-	$(addprefix gif/, fileReader.cpp header.cpp logicalScreenDescriptor.cpp \
+	$(addprefix gif/, fStreamReader.cpp header.cpp logicalScreenDescriptor.cpp \
 	colorTable.cpp extension.cpp imageDescriptor.cpp imageData.cpp)
 gif2ppm_obj=$(addprefix $(BUILDDIR)/, $(gif2ppm_src:%.cpp=%.o))
 
 gif2bmp_src=gif2bmp.cpp \
-	$(addprefix gif/, fileReader.cpp header.cpp logicalScreenDescriptor.cpp \
+	$(addprefix gif/, fStreamReader.cpp header.cpp logicalScreenDescriptor.cpp \
 	colorTable.cpp extension.cpp imageDescriptor.cpp imageData.cpp)
 gif2bmp_obj=$(addprefix $(BUILDDIR)/, $(gif2bmp_src:%.cpp=%.o))
 

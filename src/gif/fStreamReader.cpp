@@ -1,10 +1,10 @@
 /**
- * File: fileReader.cpp
+ * File: fStreamReader.cpp
  * Author: Ondřej Janošík <xjanos12@stud.fit.vutbr.cz>
  * Created: 2016/04/19
  */
 
-#include "fileReader.hpp"
+#include "fStreamReader.hpp"
 
 #include <cstring>
 
@@ -12,7 +12,7 @@ using namespace std;
 
 #define INITIAL_BUFFER_SIZE 262144 // 256 kB
 
-FileReader::FileReader(ifstream *file) {
+FStreamReader::FStreamReader(ifstream *file) {
   m_bufferSize = INITIAL_BUFFER_SIZE;
   m_buffer = new uint8_t[m_bufferSize];
   m_bufferHead = m_buffer;
@@ -21,7 +21,7 @@ FileReader::FileReader(ifstream *file) {
   m_file = file;
 }
 
-void FileReader::_allocate(size_t size) {
+void FStreamReader::_allocate(size_t size) {
   size_t required;
 
   if(size < available()) {
@@ -54,7 +54,7 @@ void FileReader::_allocate(size_t size) {
   m_allocated += m_file->gcount();
 }
 
-void FileReader::_consume(size_t size) {
+void FStreamReader::_consume(size_t size) {
 
   m_bufferHead = m_buffer;
   size = size - m_allocated;

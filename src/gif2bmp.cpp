@@ -46,9 +46,18 @@ int gif2bmp(tGIF2BMP *gif2bmp, FILE *inputFile, FILE *outputFile) {
 
   ExtensionDetector extensionDetector(r);
 
+  bool skipImage = false;
   do {
     if(extensionDetector.hasExtension()) {
       extensionDetector.skipExtension();
+    }
+    else if(skipImage) {
+      ImageDescriptor imageDescriptor(r);
+      if(imageDescriptor.hasColorTable()) {
+        ColorTable(r, imageDescriptor.getColorTableSize());
+      }
+
+      ImageData(r).skip();
     }
     else {
       ImageDescriptor imageDescriptor(r);
@@ -104,6 +113,7 @@ int gif2bmp(tGIF2BMP *gif2bmp, FILE *inputFile, FILE *outputFile) {
 
       image.drawAt(&subImage, imageDescriptor.getTop(), imageDescriptor.getLeft());
 
+      skipImage = true; // Skip next frames
     }
 
     r->allocate(1);

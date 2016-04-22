@@ -64,9 +64,18 @@ int main(int argc, char **argv) {
 
     ExtensionDetector extensionDetector(r);
 
+    bool skipImage = false;
     do {
       if(extensionDetector.hasExtension()) {
         extensionDetector.skipExtension();
+      }
+      else if(skipImage) {
+        ImageDescriptor imageDescriptor(r);
+        if(imageDescriptor.hasColorTable()) {
+          ColorTable(r, imageDescriptor.getColorTableSize());
+        }
+
+        ImageData(r).skip();
       }
       else {
         ImageDescriptor imageDescriptor(r);
@@ -121,6 +130,8 @@ int main(int argc, char **argv) {
         image.drawAt(&subImage, imageDescriptor.getTop(), imageDescriptor.getLeft());
 
         delete localColorTable;
+
+        skipImage = true; // Skip next frames
       }
 
       r->allocate(1);
